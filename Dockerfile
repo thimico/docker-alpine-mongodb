@@ -3,7 +3,7 @@ MAINTAINER thimico
 # Install MongoDB
 # At the end, remove the apk cache
 
-RUN apk add mongodb --update-cache --repository http://dl-4.alpinelinux.org/alpine/edge/testing --allow-untrusted && \
+RUN apk add mongodb --update-cache --repository http://dl-5.alpinelinux.org/alpine/edge/testing --allow-untrusted && \
 	rm -rf /var/cache/apk/*
 
 # Create dbdata path
