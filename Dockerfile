@@ -1,13 +1,18 @@
 FROM thimico/alpine
 MAINTAINER thimico
-RUN echo "@testing http://dl-4.alpinelinux.org/alpine/edge/testing" >> /etc/apk/repositories && \
-    apk upgrade --update && \
-    apk add mongodb@testing
+# Install MongoDB
+# At the end, remove the apk cache
 
-COPY ./gosu-amd64 /usr/local/bin/gosu
-COPY docker-entrypoint.sh /entrypoint.sh
+RUN apk add mongodb --update-cache --repository http://dl-4.alpinelinux.org/alpine/edge/testing --allow-untrusted && \
+	rm -rf /var/cache/apk/*
+
+# Create dbdata path
+RUN mkdir -p /data/db
+
+# Define mountable directories.
+VOLUME ["/data/db"]
+
+# Define default command.
+CMD ["mongod"]
 
 EXPOSE 27017
-VOLUME /var/lib/mongodb
-ENTRYPOINT ["/entrypoint.sh"]
-CMD ["mongod","--bind_ip","0.0.0.0","--dbpath","/var/lib/mongodb","--nounixsocket","--journal","--cpu","--noprealloc"]
