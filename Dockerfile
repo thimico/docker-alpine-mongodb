@@ -1,13 +1,20 @@
 FROM thimico/alpine
 MAINTAINER thimico
 
-RUN \
-apk add --no-cache mongodb && \
-rm /usr/bin/mongoperf
+ENV MONGO_USERNAME root
+ENV MONGO_PASSWORD password
+
+RUN apk update && \
+    apk upgrade && \
+    apk add --no-cache mongodb && \
+    rm /usr/bin/mongoperf
+
+COPY entrypoint.sh /entrypoint.sh
+COPY mongod.conf /etc/mongod.conf
 
 VOLUME /data/db
+
 EXPOSE 27017 28017
 
-COPY run.sh /root
-ENTRYPOINT [ "/root/run.sh" ]
-CMD [ "mongod" ]
+ENTRYPOINT ["/entrypoint.sh"]
+CMD ["mongod"]
