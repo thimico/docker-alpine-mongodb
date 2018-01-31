@@ -1,4 +1,4 @@
-FROM thimico/alpine
+FROM alpine:latest
 MAINTAINER thimico
 
 ENV MONGO_USERNAME root
