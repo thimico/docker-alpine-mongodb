@@ -1,6 +1,6 @@
 FROM alpine:edge
 
-MAINTAINER thimico
+MAINTAINER thimico@gmail.com
 
 RUN \
 apk add --no-cache mongodb && \
