@@ -1,21 +1,14 @@
-FROM alpine:latest
+FROM alpine:edge
 
 MAINTAINER thimico
 
-ENV MONGO_USERNAME root
-ENV MONGO_PASSWORD password
-
-RUN apk update && \
-    apk upgrade && \
-    apk add --no-cache mongodb && \
-    rm /usr/bin/mongoperf
-
-COPY entrypoint.sh /entrypoint.sh
-COPY mongod.conf /etc/mongod.conf
+RUN \
+apk add --no-cache mongodb && \
+rm /usr/bin/mongoperf
 
 VOLUME /data/db
-
 EXPOSE 27017 28017
 
-ENTRYPOINT ["/entrypoint.sh"]
-CMD ["mongod"]
+COPY run.sh /root
+ENTRYPOINT [ "/root/run.sh" ]
+CMD [ "mongod", "--bind_ip", "0.0.0.0" ]
